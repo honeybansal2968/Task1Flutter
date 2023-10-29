@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/flutter_survey.dart';
 import 'package:get/get.dart';
 import 'package:thesurvey/controllers/questionController.dart';
 import 'package:thesurvey/pages/viewResult.dart';
