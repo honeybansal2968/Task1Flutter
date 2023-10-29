@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:thesurvey/authentication/data/repositories/users_repo.dart';
 import 'package:thesurvey/authentication/presentation/pages/login.dart';
 import 'package:thesurvey/authentication/presentation/pages/signup.dart';
 import 'package:thesurvey/constants/colors.dart';
+import 'package:thesurvey/controllers/questionController.dart';
 import 'package:thesurvey/entites/survey_model.dart';
+import 'package:thesurvey/models/questionModel.dart';
+import 'package:thesurvey/pages/form_questions.dart';
 import 'package:thesurvey/pages/profile_page.dart';
 import 'package:thesurvey/pages/survey_cat.dart';
+import 'package:thesurvey/services/test_survey_service.dart';
 import '../../../constants/values.dart';
 import '../utils/fonts.dart';
 import '../utils/methods.dart';
@@ -20,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int total = 0;
   int ongoing = 0;
   int upcomming = 0;
@@ -38,7 +43,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   _moveToSurvey(String apiStr) {
-    Navigator.push(context,MaterialPageRoute(builder: (context) =>SurveyCat(surveyCat: apiStr,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SurveyCat(
+                  surveyCat: apiStr,
+                )));
   }
 
   @override
@@ -55,37 +65,42 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         backgroundColor: Colors.white,
         child: Container(
-          margin: EdgeInsets.only(top: 26),
+          margin: const EdgeInsets.only(top: 26),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: <Widget>[
-                  SizedBox(height: 20),
-                Center(child: Image.asset(logoPath, height: 60,)),
-                SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(height: 20),
+                  Center(
+                      child: Image.asset(
+                    logoPath,
+                    height: 60,
+                  )),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     alignment: AlignmentDirectional.centerStart,
-                    padding: EdgeInsets.only(top: 28, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 28, left: 20, right: 20),
                     width: double.infinity,
                     color: Colors.white,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           backgroundImage: NetworkImage(
                               'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
                           radius: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Hello'),
+                            const Text('Hello'),
                             Text(
                               'John Doe',
                               style: MainFonts.lableText(),
@@ -96,15 +111,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(20),
+                    margin: const EdgeInsets.all(20),
                     height: 1,
-                    color: Color(0xFFE6E8E7),
+                    color: const Color(0xFFE6E8E7),
                   ),
                   InkWell(
                     onTap: () {},
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,13 +127,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.dashboard_outlined,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Dashboard',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -131,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {},
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,13 +154,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.star_border_outlined,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Ongoing Survey',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -158,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {},
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,13 +181,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.star_border_outlined,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Completed Survey',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -185,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {},
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,13 +208,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.settings_outlined,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Setting',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -213,11 +228,11 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => ProfileInfo())));
+                              builder: ((context) => const ProfileInfo())));
                     },
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -225,13 +240,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.person_outline,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Profile',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -245,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                       showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: const EdgeInsets.all(10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -266,7 +281,8 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                        builder: (context) =>
+                                            const LoginPage()));
                               },
                               child: const Text('OK'),
                             ),
@@ -276,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: Container(
                         color: Colors.white,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 12, bottom: 12),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -284,13 +300,13 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.logout_outlined,
                                   size: 20,
                                   color: Colors.black,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Text('Logout',
                                       style: MainFonts.settingLabel()),
                                 ),
@@ -302,13 +318,13 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('assets/images/comlogo.png', height: 70),
-                    SizedBox(height: 6),
-                    Text(
+                    const SizedBox(height: 6),
+                    const Text(
                       'App version 1.0.1',
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -337,7 +353,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 _scaffoldKey.currentState!.openDrawer();
               },
-              icon: Icon(Icons.menu))
+              icon: const Icon(Icons.menu))
         ],
       ),
       body: NestedScrollView(
@@ -348,161 +364,169 @@ class _HomePageState extends State<HomePage> {
               Column(
                 children: [
                   Container(
-                      height: 40,
-                      color: Colors.red,
-                      child: Center(
-                          child: Text(
-                        'Notice Line ALL PAGES',
-                        style: MainFonts.lableText(color: Colors.white),
-                      )),
-                    ),
+                    height: 40,
+                    color: Colors.red,
+                    child: Center(
+                        child: Text(
+                      'Notice Line ALL PAGES',
+                      style: MainFonts.lableText(color: Colors.white),
+                    )),
+                  ),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Hello Marceter!',
                           style: MainFonts.dashText(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
                           children: [
                             Expanded(
                                 child: GestureDetector(
-                                  onTap: (){
-                                    _moveToSurvey('all_surveys_api');
-                                  },
-                                  child: Container(
-                                                              decoration: BoxDecoration(
-                                    color: Color(0xFFB620CE),
+                              onTap: () {
+                                _moveToSurvey('all_surveys_api');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFB620CE),
                                     borderRadius: BorderRadius.circular(10)),
-                                                              child: Padding(
+                                child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/svg#Layer_1.png',
                                           height: 60,
                                           width: 60,
                                         ),
-                                        Text(
+                                        const Text(
                                           'Total Survey',
-                                          style:
-                                              TextStyle(fontSize: 16, color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
                                         ),
                                         Text(total.toString(),
                                             style: MainFonts.dashNoText()),
                                       ]),
-                                                              ),
-                                                            ),
-                                )),
-                            SizedBox(
+                                ),
+                              ),
+                            )),
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                                 child: GestureDetector(
-                                  onTap: (){
-                                    _moveToSurvey('surveys_get_api');
-                                  },
-                                  child: Container(
-                                                              decoration: BoxDecoration(
+                              onTap: () {
+                                _moveToSurvey('surveys_get_api');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
                                     color: secondaryColor,
                                     borderRadius: BorderRadius.circular(10)),
-                                                              child: Padding(
+                                child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/svg#Layer_1.png',
                                           height: 60,
                                           width: 60,
                                         ),
-                                        Text(
+                                        const Text(
                                           'Ongoing Survey',
-                                          style:
-                                              TextStyle(fontSize: 16, color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
                                         ),
                                         Text(ongoing.toString(),
                                             style: MainFonts.dashNoText()),
                                       ]),
-                                                              ),
-                                                            ),
-                                )),
+                                ),
+                              ),
+                            )),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
                           children: [
                             Expanded(
                                 child: GestureDetector(
-                                  onTap: (){
-                                    _moveToSurvey('upcoming_get_api');
-                                  },
-                                  child: Container(
-                                                              decoration: BoxDecoration(
+                              onTap: () {
+                                _moveToSurvey('upcoming_get_api');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
                                     color: thirdColor,
                                     borderRadius: BorderRadius.circular(10)),
-                                                              child: Padding(
+                                child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/svg#Layer_1.png',
                                           height: 60,
                                           width: 60,
                                         ),
-                                        Text(
+                                        const Text(
                                           'Upcoming Survey\'s',
-                                          style:
-                                              TextStyle(fontSize: 16, color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
                                         ),
                                         Text(upcomming.toString(),
                                             style: MainFonts.dashNoText()),
                                       ]),
-                                                              ),
-                                                            ),
-                                )),
-                            SizedBox(
+                                ),
+                              ),
+                            )),
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                                 child: GestureDetector(
-                                  onTap: (){
-                                    _moveToSurvey('gets_survey_ans_api');
-                                  },
-                                  child: Container(
-                                                              decoration: BoxDecoration(
+                              onTap: () {
+                                _moveToSurvey('gets_survey_ans_api');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
                                     color: fourthColor,
                                     borderRadius: BorderRadius.circular(10)),
-                                                              child: Padding(
+                                child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/svg#Layer_1.png',
                                           height: 60,
                                           width: 60,
                                         ),
-                                        Text(
+                                        const Text(
                                           'Completed Survey\'s',
-                                          style:
-                                              TextStyle(fontSize: 16, color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
                                         ),
                                         Text(completed.toString(),
                                             style: MainFonts.dashNoText()),
                                       ]),
-                                                              ),
-                                                            ),
-                                )),
+                                ),
+                              ),
+                            )),
                           ],
                         ),
                       ],
@@ -514,7 +538,7 @@ class _HomePageState extends State<HomePage> {
           ];
         },
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -522,7 +546,7 @@ class _HomePageState extends State<HomePage> {
                 'Last Activites',
                 style: MainFonts.dashText(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Expanded(
@@ -532,51 +556,60 @@ class _HomePageState extends State<HomePage> {
                     Survey survey = allSurvey[index];
                     return Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: listColors[index % listColors.length],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(children: [
-                            Image.asset(
-                              'assets/images/school.png',
-                              height: 100,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    survey.surveyName ?? '',
-                                    style: MainFonts.pageTitleText(
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    survey.description ?? '',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Start Date: ${survey.createdAt != null ? survey.createdAt!.substring(0, 10) : ''}',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                  Text(
-                                    'End Date: ${survey.date != null ? survey.date!.substring(0, 10) : ''}',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                ],
+                        InkWell(
+                          onTap: () async {
+                           
+                            List<QuestionModel> questions =
+                                await TestSurveyService.fetchQuestions();
+                                
+                            Get.to(() => QuestionPage(questions: questions));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: listColors[index % listColors.length],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(children: [
+                              Image.asset(
+                                'assets/images/school.png',
+                                height: 100,
                               ),
-                            )
-                          ]),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      survey.surveyName ?? '',
+                                      style: MainFonts.pageTitleText(
+                                          color: Colors.white),
+                                    ),
+                                    Text(
+                                      survey.description ?? '',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Start Date: ${survey.createdAt != null ? survey.createdAt!.substring(0, 10) : ''}',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                    Text(
+                                      'End Date: ${survey.date != null ? survey.date!.substring(0, 10) : ''}',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ]),
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         )
                       ],

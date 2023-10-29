@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:thesurvey/authentication/presentation/pages/signup.dart';
@@ -21,18 +22,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: SplashPage(),
+      home: const SplashPage(),
     );
   }
 }
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return SplashPageState();
@@ -50,19 +53,17 @@ class SplashPageState extends State<SplashPage> {
     fourthColor,
   ];
 
-  final colorizeTextStyle = TextStyle(color: Colors.black, fontSize: 17.5);
+  final colorizeTextStyle =
+      const TextStyle(color: Colors.black, fontSize: 17.5);
 
-  _initValues() async{
+  _initValues() async {
     try {
       List<String>? data = await getLoginDetails();
-      if (data!=null) {
+      if (data != null) {
         usertype = int.parse(data[0]);
-    partnerId = int.parse(data[0]);
-
+        partnerId = int.parse(data[0]);
       }
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   }
 
   @override
@@ -81,7 +82,7 @@ class SplashPageState extends State<SplashPage> {
     return Scaffold(
         body: Center(
       child: Container(
-          padding: EdgeInsets.all(50),
+          padding: const EdgeInsets.all(50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -89,11 +90,11 @@ class SplashPageState extends State<SplashPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 240,
                     ),
                     Image.asset(logoPath, height: 74),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     AnimatedTextKit(
                       animatedTexts: [
                         ColorizeAnimatedText(
@@ -114,8 +115,8 @@ class SplashPageState extends State<SplashPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/comlogo.png', height: 70),
-                  SizedBox(height: 14),
-                  Text(
+                  const SizedBox(height: 14),
+                  const Text(
                     'Copyright @ 2023 Developed and Managed by Jusmark Tech Made with ❤️',
                     maxLines: 2,
                     textAlign: TextAlign.center,
@@ -131,18 +132,18 @@ class SplashPageState extends State<SplashPage> {
     var shardPref = await SharedPreferences.getInstance();
     var isLoggedIn = shardPref.getBool(KEY_LOGIN);
 
-    Timer(Duration(milliseconds: 2400), () {
+    Timer(const Duration(milliseconds: 2400), () {
       if (isLoggedIn != null) {
         if (isLoggedIn) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
         } else {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginPage()));
         }
       } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginPage()));
       }
     });
   }

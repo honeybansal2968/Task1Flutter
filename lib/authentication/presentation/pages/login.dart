@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       default:
         return null;
     }
+    return null;
   }
 
   @override
@@ -68,24 +69,28 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: primaryColor,
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
-                Center(child: Image.asset(logoPath, height: 60,)),
-                SizedBox(
+                const SizedBox(height: 30),
+                Center(
+                    child: Image.asset(
+                  logoPath,
+                  height: 60,
+                )),
+                const SizedBox(
                   height: 30,
                 ),
                 Text('Login',
                     style: MainFonts.pageTitleText(color: thirdColor)),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text('Welcome back to the app',
                     style: MainFonts.hintFieldText(),
                     textAlign: TextAlign.start),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Form(
@@ -100,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                           }),
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                           decoration: InputDecoration(
                             labelText: 'Email Address',
                             border: OutlineInputBorder(
@@ -108,7 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
                           validator: ((value) {
                             return _validateInput(value, 1);
@@ -116,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           keyboardType: TextInputType.text,
                           controller: passwordController,
                           obscureText: _obscureText,
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                           decoration: InputDecoration(
                             labelText: 'Password',
                             suffixIcon: IconButton(
@@ -139,16 +146,20 @@ class _LoginPageState extends State<LoginPage> {
                           child: Container(
                             padding: const EdgeInsets.only(top: 10, left: 5),
                             child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
-                                  },
-                                  child: Text('Forgot Password?',
-                                      style: AuthFonts.authMsgText(
-                                          color: fourthColor)),
-                                ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgotPassword()));
+                              },
+                              child: Text('Forgot Password?',
+                                  style: AuthFonts.authMsgText(
+                                      color: fourthColor)),
+                            ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Checkbox(
@@ -163,8 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                                 style: MainFonts.hintFieldText()),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Container(
+                        const SizedBox(height: 10),
+                        SizedBox(
                           height: 55,
                           width: double.infinity,
                           child: ElevatedButton(
@@ -173,23 +184,24 @@ class _LoginPageState extends State<LoginPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                               ),
-                              onPressed: () async{
+                              onPressed: () async {
                                 bool isValid =
                                     _formKey.currentState!.validate();
                                 if (isValid) {
-                                  int result = await login(emailController.text, passwordController.text);
+                                  int result = await login(emailController.text,
+                                      passwordController.text);
                                   if (result == 1) {
                                     Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
+                                        .popUntil((route) => route.isFirst);
                                     Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomePage()));
-                                  }else if (result == 0) {
-
-                                  } else{
-                                    mySnackBarShow(context, 'Invalid Cridentials');
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomePage()));
+                                  } else if (result == 0) {
+                                  } else {
+                                    mySnackBarShow(
+                                        context, 'Invalid Cridentials');
                                   }
                                 }
                               },
@@ -199,14 +211,17 @@ class _LoginPageState extends State<LoginPage> {
                         )
                       ]),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Align(
                     alignment: Alignment.center,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUp()));
                       },
                       child: Text(
                         'Create an account',
